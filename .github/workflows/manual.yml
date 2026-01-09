@@ -1,0 +1,32 @@
+name: Windows EXE Yapici
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Python Kur
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Kutuphaneleri Yukle
+      run: |
+        pip install -r requirements.txt
+
+    - name: EXE Olustur
+      run: |
+        pyinstaller --noconsole --onefile --name "YandexPDFIndirici" main.py
+
+    - name: EXE'yi İndirilebilir Yap
+      uses: actions/upload-artifact@v4
+      with:
+        name: Windows-Uygulamasi
+        path: dist/YandexPDFIndirici.exe
